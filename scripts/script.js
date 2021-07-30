@@ -1,5 +1,4 @@
-// greetPlayer();
-
+greetPlayer();
 
 function greetPlayer(){
     let isNumValid = false;
@@ -18,18 +17,54 @@ function greetPlayer(){
 
     } while(!isNumValid);
 
-
-    createCards(numCards);
+    generateCards(numCards);
 }
 
+function generateCards(numCards){
+    const cardsContainer = document.querySelector(".cards-container");
+    let gameDeck = buildGameDeck(numCards);
 
-function createCards(numCards){
-    const element = document.querySelector(".cards-container");
-    element.innerHTML = "";
+    cardsContainer.innerHTML = "";
     for(let i= 0 ; i < numCards; i++){
-        element.innerHTML += `
-            <div class="card">
-                <div>
+        cardsContainer.innerHTML += `
+            <div class="card" onclick="turnCard(this)">
+                <div class="face">
+                    <img src=${gameDeck[i]} >
+                </div>
+            <div>
             `;
+    }
+}
+
+function buildGameDeck(numCards){
+    const deck = getFullDeck().slice(0,(numCards));
+    deck.sort(sorter);
+    return deck;
+}
+
+function getFullDeck(){
+    const bob = "../media/bobrossparrot.gif";
+    const explody = "../media/explodyparrot.gif";
+    const fiesta = "../media/fiestaparrot.gif";
+    const metal = "../media/metalparrot.gif";
+    const revert = "../media/revertitparrot.gif";
+    const triplet = "../media/tripletsparrot.gif";
+    const unicorn = "../media/unicornparrot.gif";
+    
+    let facesArray = [bob,bob,explody,explody,fiesta,fiesta,metal,metal,revert,revert,triplet,triplet,unicorn,unicorn];
+
+    return facesArray;
+}
+
+function sorter(){
+    return Math.random() - 0.5;
+}
+
+function turnCard(card){
+    let element = card.querySelector(".face img");
+    if(card.classList.toggle("turned")){
+        element.setAttribute('style', 'opacity:1');
+    } else{
+        element.setAttribute('style', 'opacity:0');
     }
 }
