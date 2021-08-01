@@ -98,4 +98,12 @@ function checkCards(){
     }
 
     numRounds++;
+    checkIfFinished();
+}
+
+function checkIfFinished(){
+    let unmatchedCards = document.querySelector(".unmatched");
+    if(!unmatchedCards){
+        alert("Você ganhou em " + numRounds + " jogadas!");
+    }
 }
