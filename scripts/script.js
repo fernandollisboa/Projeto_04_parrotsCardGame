@@ -1,11 +1,17 @@
 greetPlayer();
 
-
-var cardsTurned = 0;
-var numRounds = 0;
+var cardsTurned;
+var numRounds;
+var clk;
+var clkInterval;
 function greetPlayer(){
     let isNumValid = false;
     let numCards;
+    cardsTurned = 0;
+    numRounds = 0;
+    clk = -1;
+
+    clkInterval = setInterval(updateClock,1000);
 
     do{
         numCards = Number(prompt("Bem vindo! Qual será o número de cartas? (4-14)"));
@@ -98,12 +104,27 @@ function checkCards(){
     }
 
     numRounds++;
-    checkIfFinished();
+    checkFinished();
 }
 
-function checkIfFinished(){
+function checkFinished(){
     let unmatchedCards = document.querySelector(".unmatched");
     if(!unmatchedCards){
-        alert("Você ganhou em " + numRounds + " jogadas!");
+        clearInterval(clkInterval);
+        alert("Você ganhou em " + numRounds + " jogadas! (" + clk + " seg)");
+        let playerOpt = prompt("Você gostaria de jogar outra partida? (s/n)");
+
+        if(playerOpt==='s'){
+            greetPlayer();
+        } else {
+            alert("Obrigado por jogar!");
+        }
+       
     }
+}
+
+function updateClock(){
+    let clock = document.querySelector(".clock-time");
+    clk++;
+    clock.innerHTML = clk;
 }
