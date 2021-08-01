@@ -1,5 +1,8 @@
 greetPlayer();
 
+
+var cardsTurned = 0;
+var numRounds = 0;
 function greetPlayer(){
     let isNumValid = false;
     let numCards;
@@ -27,8 +30,8 @@ function generateCards(numCards){
     cardsContainer.innerHTML = "";
     for(let i= 0 ; i < numCards; i++){
         cardsContainer.innerHTML += `
-            <div class="card" onclick="turnCard(this)">
-                <div class="face">
+            <div class="card unmatched" onclick="turnCard(this)">
+                <div class="back-face">
                     <img src=${gameDeck[i]} >
                 </div>
             <div>
@@ -61,10 +64,38 @@ function sorter(){
 }
 
 function turnCard(card){
-    let element = card.querySelector(".face img");
-    if(card.classList.toggle("turned")){
-        element.setAttribute('style', 'opacity:1');
-    } else{
-        element.setAttribute('style', 'opacity:0');
+    let backImage = card.querySelector(".back-face img");
+
+    card.classList.add("turned");
+    backImage.style.opacity = 1;
+    cardsTurned++;
+
+    if(cardsTurned == 2){
+        setTimeout(checkCards,1000);
+        cardsTurned = 0;
     }
+}
+
+function checkCards(){
+    let turnedCards = document.querySelectorAll(".turned.unmatched");
+    let cardImgs = [];
+
+    for(card of turnedCards){
+        cardImgs.push(card.querySelector(".back-face img"));
+    }
+    
+    if(cardImgs[0].src === cardImgs[1].src){
+        for(card of turnedCards){
+            card.classList.remove("unmatched");
+        }
+    } 
+
+    else{
+        for(let i=0; i< turnedCards.length; i++){
+            turnedCards[i].classList.remove("turned");
+            cardImgs[i].style.opacity = 0;
+        }
+    }
+
+    numRounds++;
 }
